@@ -57,6 +57,30 @@ POST_COMMENT_SUBMIT
 	Commenter
 POST_COMMENT_DELETE_CONFIRM
 	Êtes-vous sûr de vouloir supprimer ce commentaire ?
+POST_LIKE_LINK
+	J’aime
+POST_UNLIKE_LINK
+	Je n’aime plus
+POST_LIKE_USER
+	Vous
+POST_LIKE_LASTSEP
+        et 
+POST_LIKE_SEPARATOR
+        ,
+POST_LIKE_END_PLURAL_1
+        aiment ça.
+POST_LIKE_END_PLURAL_2
+        aimez ça.
+POST_LIKE_END_SING_2
+        aimez.
+POST_LIKE_END_SING_1
+        aime ça.
+POST_LIKE_OTHER_PLURAL
+        personnes
+POST_LIKE_OTHER_SING
+        une personne
+POST_LIKE_THIS
+        {nb} Likes this
 POST_PRIVATE
 	Visible uniquement par les élèves
 POST_SHOW_MORE

@@ -79,11 +79,25 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'ajax/post/{id}/comment/add'
 		),
 		
-		// Delete post
+		// Delete comment post
 		'post_comment_delete'	=> array(
 			'regexp'	=> '^ajax/post/comment/([0-9]+)/delete(?=\?|$)',
 			'vars'		=> 'controller=PostComment&action=delete&id=$1&mode=json',
 			'url'		=> 'ajax/post/comment/{id}/delete'
+		),
+			
+		// Add a Like
+		'like_comment'	=> array(
+			'regexp'	=> '^ajax/like/([0-9]+)/add(?=\?|$)',
+			'vars'		=> 'controller=PostLike&action=add&post_id=$1&mode=raw',
+			'url'		=> 'ajax/like/{post_id}/{comment_id}/add'
+		),
+		
+		// Delete comment Like
+		'like_comment_delete'	=> array(
+			'regexp'	=> '^ajax/like/([0-9]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=PostLike&action=delete&post_id=$1&mode=json',
+			'url'		=> 'ajax/like/{id}/delete'
 		),
 		
 		// Events' posts in a month

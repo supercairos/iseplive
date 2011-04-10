@@ -1,5 +1,7 @@
 <?php
+
 $user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $username));
+
 ?>
 
 <div id="post-comment-<?php echo $id; ?>" class="post-comment<?php

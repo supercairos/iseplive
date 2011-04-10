@@ -52,7 +52,6 @@ class Post_Model extends Model {
 		}
 		if(isset($params['id']) && (is_int($params['id']) || ctype_digit($params['id'])))
 			$where[] = 'p.id = '.$params['id'];
-		
 		$posts = DB::select('
 			SELECT
 				p.id, p.message, p.time, p.private, p.official,
@@ -68,7 +67,6 @@ class Post_Model extends Model {
 			ORDER BY p.time DESC
 			LIMIT '.$offset.', '.$limit.'
 		');
-		
 		if(count($posts) != 0){
 			
 			if(isset($params['ids']) && is_array($params['ids']))
@@ -102,6 +100,34 @@ class Post_Model extends Model {
 				$comments_by_post_id[$post_id][] = $comment;
 			}
 			unset($comments);
+                        
+                        // Posts Likes
+			$likes = DB::select('
+				SELECT
+					li.post_id, li.id, li.user_id as like_user_id,
+					u.username,
+					s.firstname, s.lastname
+				FROM post_likes li
+				INNER JOIN users u ON u.id = li.user_id
+				INNER JOIN students s ON s.username = u.username
+				WHERE li.post_id IN ('.implode(',', $post_ids).')
+				ORDER BY li.id DESC
+			');
+			$likes_by_post_id = array();
+                        $users_likes = array();
+			foreach($likes as $like){
+				$post_id = (int) $like['post_id'];
+				if(empty($likes_by_post_id[$post_id]))
+					$likes_by_post_id[$post_id] = array();
+                                $post_id = (int) $like['post_id'];
+				if(empty($users_likes[$post_id]))
+					$users_likes[$post_id] = array();
+                                $users_likes[$post_id][] = $like['like_user_id'];
+                                unset($like['like_user_id']);
+				unset($like['post_id']);
+				$likes_by_post_id[$post_id][] = $like;
+			}
+			unset($likes);
 			
 			// Attachments
 			$attachments = DB::select('
@@ -189,6 +215,10 @@ class Post_Model extends Model {
 				$post_id = (int) $post['id'];
 				if(isset($comments_by_post_id[$post_id]))
 					$post['comments'] = & $comments_by_post_id[$post_id];
+                                if(isset($likes_by_post_id[$post_id]))
+					$post['likes']['data'] = & $likes_by_post_id[$post_id];
+                                if(isset($users_likes[$post_id]))
+					$post['likes']['users'] = & $users_likes[$post_id];
 				if(isset($attachments_by_post_id[$post_id]))
 					$post['attachments'] = & $attachments_by_post_id[$post_id];
 				if(isset($events_by_post_id[$post_id]))
