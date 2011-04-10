@@ -277,12 +277,12 @@
                 if ($last == 0) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_LASTSEP') ?></span>
                     <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_SING_1'); ?>
-          <?php } else if($last < 3) { ?>
+          <?php } else if($last < Config::LIKE_DISPLAYED) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
                     <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_PLURAL_1'); ?>
           <?php } else { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, 2)).' '.__('POST_LIKE_LASTSEP') ?>
+                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, Config::LIKE_DISPLAYED-1)).' '.__('POST_LIKE_LASTSEP') ?>
                         <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last-1) == 1) ? __('POST_LIKE_OTHER_SING') : ($last-1).' '.__('POST_LIKE_OTHER_PLURAL')); ?></a> <?php echo __('POST_LIKE_END_PLURAL_1') ?></span>
                     <?php echo '<span class="hidden" id="like-show-all-'.$post['id'].'">'.implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_1').'</span>';
                 }
@@ -292,13 +292,13 @@
                 <?php } else if ($last == 0) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_LASTSEP') ?></span>
                   <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_2');
-                    } else if($last < 3) { ?>
+                    } else if($last < Config::LIKE_DISPLAYED) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
                   <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_PLURAL_2');
                     } else { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?><?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, 2)).' '.__('POST_LIKE_LASTSEP') ?>
-                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last-1) == 1) ? __('POST_LIKE_OTHER_SING') : ($last-1).' '.__('POST_LIKE_OTHER_PLURAL')); ?></a>
+                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, Config::LIKE_DISPLAYED-1)).' '.__('POST_LIKE_LASTSEP') ?>
+                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last) == 1) ? __('POST_LIKE_OTHER_SING') : ($last).' '.__('POST_LIKE_OTHER_PLURAL')); ?></a>
                         <?php echo __('POST_LIKE_END_PLURAL_2') ?></span>
                     <?php echo '<span class="hidden" id="like-show-all-'.$post['id'].'">'.implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_2').'</span>';
                 }

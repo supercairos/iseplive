@@ -94,6 +94,9 @@ final class Config extends ConfigAbstract {
 	
 	// Number of displayed posts
 	const POST_DISPLAYED = 10;
+        
+        // Number of displayed like
+        const LIKE_DISPLAYED = 2;
 	
 	// Number of displayed photos per post in the timeline
 	const PHOTOS_PER_POST = 3;
