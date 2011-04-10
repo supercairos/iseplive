@@ -1,3 +1,3 @@
 <?php
 
-echo json_encode(array('success' => $success));
+echo json_encode($success);

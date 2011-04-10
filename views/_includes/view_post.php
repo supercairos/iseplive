@@ -257,7 +257,7 @@
     </div>
 
     <?php if (isset($post['likes'])) { ?>
-        <div id="post-like-<?php echo $post['id'] ?>" class="post-comment " style="min-height: 16px;">
+        <div id="post-like-<?php echo $post['id'] ?>" class="post-comment post-like" style="min-height: 16px;">
             <?php
             $name = array();
             // On Range des utilisateur pour pouvoir mieux les afficher.
@@ -306,7 +306,7 @@
             ?>
         </div>
     <?php } else { ?>
-        <div id="post-like-<?php echo $post['id'] ?>"class="post-comment hidden" style="min-height: 16px;">
+        <div id="post-like-<?php echo $post['id'] ?>"class="post-comment post-like hidden" style="min-height: 16px;">
             <span id="new-like-container-<?php echo $post['id']; ?>"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_END_SING_2') ?></span>
         </div>
     <?php } ?>

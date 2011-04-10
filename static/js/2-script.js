@@ -425,7 +425,7 @@ var Like = {
         new Request({
             url: 'ajax/like/'+post_id+'/add',
             onSuccess: function(data){
-                if(data.success == true){
+                if(data == 'true'){
                     // On Change de Bouton de Like->Unlike
                     $('post-like-link-'+post_id).toggleClass('hidden');
                     $('post-unlike-link-'+post_id).toggleClass('hidden');
@@ -443,7 +443,7 @@ var Like = {
         new Request({
             url: 'ajax/like/'+post_id+'/delete',
             onSuccess: function(data){
-                if(!data.success == true){
+                if(data  == 'true'){
                     $('post-like-link-'+post_id).toggleClass('hidden');
                     $('post-unlike-link-'+post_id).toggleClass('hidden');
                     $('new-like-container-'+post_id).addClass('hidden');
