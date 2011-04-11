@@ -406,7 +406,7 @@
                             unset($like_user_url);
                             unset($comment_like);
                             ?>
-                            <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden"><?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name); ?></div>
+                        <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden-like-box hidden"><?php echo implode('<br />', $name); ?></div>
                     <?php } ?>
                         </div>
                     </div>
