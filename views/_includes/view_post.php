@@ -393,7 +393,7 @@
                             echo $name;
                             unset($name);
                         } else {
-                            echo '<a href="javascript:;" id="post-com-like-new-'.$comment['id'].'" class="has-value" onclick="Like.showAllCom('.$comment['id'].')"><span id="post-com-like-val-'.$comment['id'].'">'.$nb.'</span> '.__('POST_LIKE_END_PLURAL_1').'</a>';
+                            echo '<a href="javascript:;" id="post-com-like-new-'.$comment['id'].'" class="has-value" onclick="Like.showAllCom('.$comment['id'].')"><span id="post-com-like-val-'.$comment['id'].'">'.$nb.'</span> '.__('POST_LIKE_OTHER_PLURAL').' '.__('POST_LIKE_END_PLURAL_1').'</a>';
                             $name = array();
                             foreach ($comment['like'] as $comment_like) {
                                 if($comment['like'][0]['username'] ==  User_Model::$auth_data['username'])

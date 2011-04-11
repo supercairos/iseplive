@@ -14,6 +14,9 @@ echo ' post-comment-attachment'.(isset($attachment_id) ? $attachment_id: '0');
 		<?php echo Text::inHTML($message); ?>
 		<div class="post-comment-info">
 			<?php echo Date::easy(time()); ?>
+                        &#183; <a href="javascript:;" onclick="Like.initPostComLike(<?php echo $post_id ?>, <?php echo $id ?>)" id="post-com-like-link-<?php echo $id ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
+                            <a href="javascript:;" onclick="Like.initPostComUnlike(<?php echo $post_id ?>, <?php echo $id ?>)" class="hidden" id="post-com-unlike-link-<?php echo $id ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
+                        &#183; <span id="post-com-like-new-<?php echo $id ?>" class="hidden"><?php echo __('POST_LIKE_USER').' '.__('POST_LIKE_END_SING_2') ?></span>
 		</div>
 	</div>
 </div>
