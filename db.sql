@@ -1,31 +1,54 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Lun 11 Avril 2011 à 13:37
+-- Version du serveur: 5.5.8
+-- Version de PHP: 5.3.5
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Base de données: `iseplive`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `attachments`
+--
+
 DROP TABLE IF EXISTS `attachments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `attachments` (
+CREATE TABLE IF NOT EXISTS `attachments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `ext` varchar(4) NOT NULL COMMENT 'Extension du fichier stocké correspondant',
   PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`),
-  CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `post_id` (`post_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- RELATIONS POUR LA TABLE `attachments`:
+--   `post_id`
+--       `posts` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categories`
+--
+
 DROP TABLE IF EXISTS `categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` tinyint(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
   `url_name` varchar(100) NOT NULL,
@@ -33,12 +56,16 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`id`),
   KEY `order` (`order`),
   KEY `url_name` (`url_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `events`
+--
+
 DROP TABLE IF EXISTS `events`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `events` (
+CREATE TABLE IF NOT EXISTS `events` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(150) NOT NULL,
   `post_id` int(10) unsigned NOT NULL,
@@ -47,14 +74,23 @@ CREATE TABLE `events` (
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`),
   KEY `date_start` (`date_start`),
-  KEY `date_end` (`date_end`),
-  CONSTRAINT `events_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `date_end` (`date_end`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- RELATIONS POUR LA TABLE `events`:
+--   `post_id`
+--       `posts` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groups`
+--
+
 DROP TABLE IF EXISTS `groups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `groups` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
   `url_name` varchar(100) NOT NULL,
@@ -63,12 +99,16 @@ CREATE TABLE `groups` (
   `mail` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `url_name` (`url_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groups_users`
+--
+
 DROP TABLE IF EXISTS `groups_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `groups_users` (
+CREATE TABLE IF NOT EXISTS `groups_users` (
   `group_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `title` varchar(50) NOT NULL COMMENT 'Poste',
@@ -77,32 +117,25 @@ CREATE TABLE `groups_users` (
   UNIQUE KEY `group_id` (`group_id`,`user_id`),
   KEY `user_id` (`user_id`),
   KEY `order` (`order`),
-  KEY `group_id_2` (`group_id`),
-  CONSTRAINT `groups_users_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `groups_users_ibfk_3` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE
+  KEY `group_id_2` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `post_comments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `post_comments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `post_id` int(10) unsigned NOT NULL,
-  `attachment_id` int(10) unsigned DEFAULT NULL,
-  `message` text NOT NULL,
-  `time` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`,`time`),
-  KEY `attachment_id` (`attachment_id`),
-  CONSTRAINT `post_comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `post_comments_ibfk_2` FOREIGN KEY (`attachment_id`) REFERENCES `attachments` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- RELATIONS POUR LA TABLE `groups_users`:
+--   `user_id`
+--       `users` -> `id`
+--   `group_id`
+--       `groups` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `posts`
+--
+
 DROP TABLE IF EXISTS `posts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `posts` (
+CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `message` text NOT NULL,
@@ -117,16 +150,114 @@ CREATE TABLE `posts` (
   KEY `private` (`private`),
   KEY `time` (`time`),
   KEY `category_id` (`category_id`),
-  KEY `group_id` (`group_id`),
-  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `posts_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `posts_ibfk_4` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+
+--
+-- RELATIONS POUR LA TABLE `posts`:
+--   `user_id`
+--       `users` -> `id`
+--   `category_id`
+--       `categories` -> `id`
+--   `group_id`
+--       `groups` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `post_comments`
+--
+
+DROP TABLE IF EXISTS `post_comments`;
+CREATE TABLE IF NOT EXISTS `post_comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `post_id` int(10) unsigned NOT NULL,
+  `attachment_id` int(10) unsigned DEFAULT NULL,
+  `message` text NOT NULL,
+  `time` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`,`time`),
+  KEY `attachment_id` (`attachment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- RELATIONS POUR LA TABLE `post_comments`:
+--   `post_id`
+--       `posts` -> `id`
+--   `attachment_id`
+--       `attachments` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `post_comment_likes`
+--
+
+DROP TABLE IF EXISTS `post_comment_likes`;
+CREATE TABLE IF NOT EXISTS `post_comment_likes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` int(10) unsigned NOT NULL,
+  `comment_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `attachement_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `user_id` (`user_id`),
+  KEY `attachement_id` (`attachement_id`),
+  KEY `post_id` (`post_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
+
+--
+-- RELATIONS POUR LA TABLE `post_comment_likes`:
+--   `post_id`
+--       `posts` -> `id`
+--   `comment_id`
+--       `post_comments` -> `id`
+--   `user_id`
+--       `users` -> `id`
+--   `attachement_id`
+--       `attachments` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `post_likes`
+--
+
+DROP TABLE IF EXISTS `post_likes`;
+CREATE TABLE IF NOT EXISTS `post_likes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `post_id` int(10) unsigned NOT NULL,
+  `attachment_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `post_id` (`post_id`),
+  KEY `attachment_id` (`attachment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+
+--
+-- RELATIONS POUR LA TABLE `post_likes`:
+--   `post_id`
+--       `posts` -> `id`
+--   `user_id`
+--       `users` -> `id`
+--   `attachment_id`
+--       `attachments` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `students`
+--
+
 DROP TABLE IF EXISTS `students`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `students` (
+CREATE TABLE IF NOT EXISTS `students` (
   `username` varchar(10) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
@@ -136,39 +267,61 @@ CREATE TABLE `students` (
   PRIMARY KEY (`username`),
   KEY `promo` (`promo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `survey_answers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `survey_answers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `survey_id` int(10) unsigned NOT NULL,
-  `answer` varchar(255) NOT NULL,
-  `nb_votes` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `votes` text NOT NULL COMMENT 'Tableau JSON des votants',
-  PRIMARY KEY (`id`),
-  KEY `survey_id` (`survey_id`),
-  CONSTRAINT `survey_answers_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `surveys` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `surveys`
+--
+
 DROP TABLE IF EXISTS `surveys`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `surveys` (
+CREATE TABLE IF NOT EXISTS `surveys` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL,
   `question` varchar(255) NOT NULL,
   `multiple` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0 : 1 seule réponse possible, 1 : plusieurs réponses possibles',
   `date_end` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`),
-  CONSTRAINT `surveys_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  KEY `post_id` (`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- RELATIONS POUR LA TABLE `surveys`:
+--   `post_id`
+--       `posts` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `survey_answers`
+--
+
+DROP TABLE IF EXISTS `survey_answers`;
+CREATE TABLE IF NOT EXISTS `survey_answers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `survey_id` int(10) unsigned NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  `nb_votes` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `votes` text NOT NULL COMMENT 'Tableau JSON des votants',
+  PRIMARY KEY (`id`),
+  KEY `survey_id` (`survey_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- RELATIONS POUR LA TABLE `survey_answers`:
+--   `survey_id`
+--       `surveys` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL,
   `admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -183,15 +336,71 @@ CREATE TABLE `users` (
   `birthday` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Contraintes pour les tables exportées
+--
 
+--
+-- Contraintes pour la table `attachments`
+--
+ALTER TABLE `attachments`
+  ADD CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `events`
+--
+ALTER TABLE `events`
+  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `groups_users`
+--
+ALTER TABLE `groups_users`
+  ADD CONSTRAINT `groups_users_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `groups_users_ibfk_3` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `posts_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `posts_ibfk_4` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `post_comments`
+--
+ALTER TABLE `post_comments`
+  ADD CONSTRAINT `post_comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_comments_ibfk_2` FOREIGN KEY (`attachment_id`) REFERENCES `attachments` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `post_comment_likes`
+--
+ALTER TABLE `post_comment_likes`
+  ADD CONSTRAINT `post_comment_likes_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_comment_likes_ibfk_2` FOREIGN KEY (`comment_id`) REFERENCES `post_comments` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_comment_likes_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_comment_likes_ibfk_4` FOREIGN KEY (`attachement_id`) REFERENCES `attachments` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `post_likes`
+--
+ALTER TABLE `post_likes`
+  ADD CONSTRAINT `post_likes_ibfk_3` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post_likes_ibfk_2` FOREIGN KEY (`attachment_id`) REFERENCES `attachments` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `surveys`
+--
+ALTER TABLE `surveys`
+  ADD CONSTRAINT `surveys_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `survey_answers`
+--
+ALTER TABLE `survey_answers`
+  ADD CONSTRAINT `survey_answers_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `surveys` (`id`) ON DELETE CASCADE;
