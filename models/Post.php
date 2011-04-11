@@ -80,7 +80,7 @@ class Post_Model extends Model {
 			// Comments
 			$comments = DB::select('
 				SELECT
-					pc.post_id, pc.id, pc.message, pc.time, pc.attachment_id,
+					pc.post_id, pc.id, pc.message, pc.time, pc.attachment_id, pc.id,
 					u.username,
 					s.student_number, s.firstname, s.lastname
 				FROM post_comments pc
@@ -90,6 +90,19 @@ class Post_Model extends Model {
 				'.(isset($params['restricted']) && $params['restricted'] ? 'AND pc.attachment_id IS NULL' : '').'
 				ORDER BY pc.time ASC
 			');
+                        
+                        $comment_likes = DB::select('
+				SELECT
+					pcl.comment_id, pcl.user_id as comment_like_user_id,
+					u.username,
+					s.student_number, s.firstname, s.lastname
+				FROM post_comment_likes pcl
+                                INNER JOIN post_comments pc ON pcl.comment_id = pc.id
+				INNER JOIN users u ON u.id = pcl.user_id
+				INNER JOIN students s ON s.username = u.username
+				WHERE pc.post_id IN ('.implode(',', $post_ids).')
+			');
+                        
 			$comments_by_post_id = array();
 			foreach($comments as $comment){
 				$post_id = (int) $comment['post_id'];
@@ -97,8 +110,20 @@ class Post_Model extends Model {
 					$comments_by_post_id[$post_id] = array();
 				unset($comment['post_id']);
 				$comment['avatar_url'] = Student_Model::getAvatarURL($comment['student_number'], true);
+                                /* Traitement des Likes */
+                                foreach($comment_likes as $comment_like){
+                                    
+                                    // Si c'est le like en question :
+                                    if($comment['id'] == $comment_like['comment_id']){
+                                        $comment['like'][] = $comment_like;
+                                        $comment['user_liked'][] = $comment_like['comment_like_user_id']; 
+                                    }
+                                }
 				$comments_by_post_id[$post_id][] = $comment;
 			}
+                        /* echo '<pre>';
+                        print_r($comments_by_post_id);
+                        echo '</pre>'; */
 			unset($comments);
                         
                         // Posts Likes

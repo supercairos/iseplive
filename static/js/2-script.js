@@ -436,6 +436,36 @@ var Like = {
             }
         }).post(obj);
     },
+    initPostComLike: function(post_id, comment_id){
+        var obj = {
+            comment_id : comment_id
+        };
+        if(Post.currentPhoto != -1)
+                obj.attachment = Post.photos[Post.currentPhoto].id;
+        new Request({
+            url: 'ajax/likecom/'+post_id+'/add',
+            onSuccess: function(data){
+                alert(data);
+                if(data == 'true'){
+                    // On Change de Bouton de Like->Unlike
+                    $('post-com-like-link-'+comment_id).toggleClass('hidden');
+                    $('post-com-unlike-link-'+comment_id).toggleClass('hidden');
+                    // On Affiche le tout
+                    if($('post-com-like-new-'+comment_id).hasClass('has-value')){
+                        var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                        $('post-com-like-val-'+comment_id).set('text', (value+1));
+                    } else {
+                        if($('post-com-like-new-'+comment_id).hasClass('is-stranger')){
+                            $('post-com-like-new-'+comment_id).addClass('hidden');
+                            $('post-com-unlike-new-'+comment_id).removeClass('hidden');
+                        } else {
+                            $('post-com-like-new-'+comment_id).removeClass('hidden');
+                        }
+                    }
+                }
+            }
+        }).post(obj);
+    },
     initPostUnlike: function(post_id){
         var obj = {};
         if(Post.currentPhoto != -1)
@@ -453,10 +483,42 @@ var Like = {
             }
         }).post(obj);
     },
+    initPostComUnlike: function(post_id, comment_id){
+        var obj = {
+            comment_id : comment_id
+        };
+        if(Post.currentPhoto != -1)
+                obj.attachment = Post.photos[Post.currentPhoto].id;
+        new Request({
+            url: 'ajax/likecom/'+post_id+'/delete',
+            onSuccess: function(data){
+                alert(data);
+                if(data  == 'true'){
+                    $('post-com-like-link-'+comment_id).toggleClass('hidden');
+                    $('post-com-unlike-link-'+comment_id).toggleClass('hidden');
+                    if($('post-com-like-new-'+comment_id).hasClass('has-value')){
+                        var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                        $('post-com-like-val-'+comment_id).set('text', (value-1));
+                    } else {
+                        if($('post-com-like-new-'+comment_id).hasClass('is-stranger')){
+                            $('post-com-like-new-'+comment_id).removeClass('hidden');
+                            $('post-com-unlike-new-'+comment_id).addClass('hidden');
+                        } else {
+                            $('post-com-like-new-'+comment_id).addClass('hidden');
+                        }
+                    }
+                }
+            }
+        }).post(obj);
+    },
         
     showAll : function(post_id){
         $('like-show-short-'+post_id).destroy();
         $('like-show-all-'+post_id).removeClass("hidden");
+    },
+    showAllCom : function(comment_id){
+        $('post-com-like-new-'+comment_id).destroy();
+        $('post-com-like-all-'+comment_id).removeClass("hidden");
     }
 };
 

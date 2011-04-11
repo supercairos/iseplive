@@ -1,6 +1,6 @@
 <?php
 
-class PostLike_Controller extends Controller {
+class PostCommentLike_Controller extends Controller {
 
     public function add($params) {
 
@@ -12,7 +12,7 @@ class PostLike_Controller extends Controller {
         if (!isset(User_Model::$auth_data['student_number']))
             throw new Exception('You must be a student to post a comment');
         try {
-            $id = $this->model->add((int) $params['post_id'], (int) User_Model::$auth_data['id'], $attachment_id);
+            $id = $this->model->add((int) $params['post_id'], (int) User_Model::$auth_data['id'], (int) $_POST['comment_id'], $attachment_id);
             if (is_numeric($id) && !is_null($id))
                 $this->set(array('success' => true));
             else
@@ -31,7 +31,7 @@ class PostLike_Controller extends Controller {
         if (!isset(User_Model::$auth_data['student_number']))
             throw new Exception('You must be a student to post a comment');
         try {
-            $id = $this->model->delete($params['post_id'], (int) User_Model::$auth_data['id']);
+            $id = $this->model->delete($params['post_id'], (int) User_Model::$auth_data['id'], (int) $_POST['comment_id']);
             $this->set(array('success' => true));
         } catch (Exception $e) {
             //echo $e->getMessage();

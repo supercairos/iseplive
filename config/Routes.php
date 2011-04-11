@@ -87,17 +87,31 @@ final class Routes extends RoutesAbstract {
 		),
 			
 		// Add a Like
-		'like_comment'	=> array(
+		'like'	=> array(
 			'regexp'	=> '^ajax/like/([0-9]+)/add(?=\?|$)',
 			'vars'		=> 'controller=PostLike&action=add&post_id=$1&mode=raw',
-			'url'		=> 'ajax/like/{post_id}/{comment_id}/add'
+			'url'		=> 'ajax/like/{post_id}/add'
+		),
+		
+		// Delete Like
+		'like_delete'	=> array(
+			'regexp'	=> '^ajax/like/([0-9]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=PostLike&action=delete&post_id=$1&mode=json',
+			'url'		=> 'ajax/likecom/{id}/delete'
+		),
+            
+                // Add a comment Like
+		'like_comment'	=> array(
+			'regexp'	=> '^ajax/likecom/([0-9]+)/add(?=\?|$)',
+			'vars'		=> 'controller=PostCommentLike&action=add&post_id=$1&mode=raw',
+			'url'		=> 'ajax/likecom/{post_id}/add'
 		),
 		
 		// Delete comment Like
 		'like_comment_delete'	=> array(
-			'regexp'	=> '^ajax/like/([0-9]+)/delete(?=\?|$)',
-			'vars'		=> 'controller=PostLike&action=delete&post_id=$1&mode=json',
-			'url'		=> 'ajax/like/{id}/delete'
+			'regexp'	=> '^ajax/likecom/([0-9]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=PostCommentLike&action=delete&post_id=$1&mode=json',
+			'url'		=> 'ajax/likecom/{id}/delete'
 		),
 		
 		// Events' posts in a month

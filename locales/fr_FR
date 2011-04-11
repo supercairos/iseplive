@@ -79,8 +79,6 @@ POST_LIKE_OTHER_PLURAL
         personnes
 POST_LIKE_OTHER_SING
         une personne
-POST_LIKE_THIS
-        {nb} Likes this
 POST_PRIVATE
 	Visible uniquement par les élèves
 POST_SHOW_MORE

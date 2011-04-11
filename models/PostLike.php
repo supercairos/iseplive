@@ -10,7 +10,7 @@ class PostLike_Model extends Model {
         }
     }
 
-    public function add($post_id, $user_id, $attachment_id) {
+    public function add($post_id, $user_id, $attachment_id=null) {
         
         if (isset($attachment_id)) {
             $attachment = DB::createQuery('attachments')->select($attachment_id);
@@ -34,6 +34,7 @@ class PostLike_Model extends Model {
                 ->set(array(
                     'post_id' => $post_id,
                     'user_id' => $user_id,
+                    'attachment_id' => $attachment_id
                 ))->insert();
         self::clearCache();
         return $id;

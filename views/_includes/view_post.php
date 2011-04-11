@@ -118,7 +118,7 @@
                     ?>
                     <div class="survey-choice-vote">
                         <input type="submit" value="<?php echo __('POST_SURVEY_SUBMIT'); ?>" />
-                                                		- <a href="javascript:;"><?php echo __('POST_SURVEY_SHOW_RESULTS'); ?></a>
+                                                                		- <a href="javascript:;"><?php echo __('POST_SURVEY_SHOW_RESULTS'); ?></a>
                     </div>
                     <div class="survey-choice-results">
                         <a href="javascript:;"><?php echo __('POST_SURVEY_SHOW_VOTE'); ?></a>
@@ -235,16 +235,16 @@
         if ($is_student) {
             ?>
             &#183; <a href="javascript:;" onclick="Comment.write(<?php echo $post['id']; ?>);"><?php echo __('POST_COMMENT_LINK'); ?></a>
-<!-- Like Links -->
+            <!-- Like Links -->
             <?php
             $has_liked = (empty($post['likes']['users'])) ? false : in_array(User_Model::$auth_data['id'], $post['likes']['users'], true);
             if (!$has_liked) {
                 ?>
                 &#183; <a href="javascript:;" onclick="Like.initPostLike(<?php echo $post['id'] ?>)" id="post-like-link-<?php echo $post['id'] ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
-                       <a href="javascript:;" onclick="Like.initPostUnlike(<?php echo $post['id'] ?>)" class="hidden" id="post-unlike-link-<?php echo $post['id'] ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
+                <a href="javascript:;" onclick="Like.initPostUnlike(<?php echo $post['id'] ?>)" class="hidden" id="post-unlike-link-<?php echo $post['id'] ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
             <?php } else { ?>
                 &#183; <a href="javascript:;" onclick="Like.initPostUnlike(<?php echo $post['id'] ?>)" id="post-unlike-link-<?php echo $post['id'] ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
-                       <a href="javascript:;" onclick="Like.initPostLike(<?php echo $post['id'] ?>)" class="hidden" id="post-like-link-<?php echo $post['id'] ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
+                <a href="javascript:;" onclick="Like.initPostLike(<?php echo $post['id'] ?>)" class="hidden" id="post-like-link-<?php echo $post['id'] ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
                 <?php
             }
         }
@@ -270,37 +270,41 @@
             $last = count($name) - 1;
             // On fait de belle phrase !
             if ($last > 0) {
-                $name[$last - 1] = $name[$last - 1] . ' '.__('POST_LIKE_LASTSEP').' ' . $name[$last];
+                $name[$last - 1] = $name[$last - 1] . ' ' . __('POST_LIKE_LASTSEP') . ' ' . $name[$last];
                 unset($name[$last]);
             }
             if (!$has_liked) {
-                if ($last == 0) { ?>
+                if ($last == 0) {
+                    ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_LASTSEP') ?></span>
-                    <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_SING_1'); ?>
-          <?php } else if($last < Config::LIKE_DISPLAYED) { ?>
+                    <?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_SING_1'); ?>
+                <?php } else if ($last < Config::LIKE_DISPLAYED) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                    <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_PLURAL_1'); ?>
-          <?php } else { ?>
+                    <?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_PLURAL_1'); ?>
+                <?php } else { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class="hidden"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, Config::LIKE_DISPLAYED-1)).' '.__('POST_LIKE_LASTSEP') ?>
-                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last-1) == 1) ? __('POST_LIKE_OTHER_SING') : ($last-1).' '.__('POST_LIKE_OTHER_PLURAL')); ?></a> <?php echo __('POST_LIKE_END_PLURAL_1') ?></span>
-                    <?php echo '<span class="hidden" id="like-show-all-'.$post['id'].'">'.implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_1').'</span>';
+                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', array_slice($name, 0, Config::LIKE_DISPLAYED - 1)) . ' ' . __('POST_LIKE_LASTSEP') ?>
+                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last - 1) == 1) ? __('POST_LIKE_OTHER_SING') : ($last - 1) . ' ' . __('POST_LIKE_OTHER_PLURAL')); ?></a> <?php echo __('POST_LIKE_END_PLURAL_1') ?></span>
+                    <?php
+                    echo '<span class="hidden" id="like-show-all-' . $post['id'] . '">' . implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_PLURAL_1') . '</span>';
                 }
             } else {
-                if ($last == -1) { ?>
+                if ($last == -1) {
+                    ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_END_SING_2') ?></span>
                 <?php } else if ($last == 0) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_LASTSEP') ?></span>
-                  <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_2');
-                    } else if($last < Config::LIKE_DISPLAYED) { ?>
+                    <?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_PLURAL_2');
+                } else if ($last < Config::LIKE_DISPLAYED) { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                  <?php echo implode(__('POST_LIKE_SEPARATOR').' ', $name).' '.__('POST_LIKE_END_PLURAL_2');
-                    } else { ?>
+                    <?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_PLURAL_2');
+                } else { ?>
                     <span id="new-like-container-<?php echo $post['id'] ?>" class=""><?php echo __('POST_LIKE_USER') ?><?php echo __('POST_LIKE_SEPARATOR') ?></span>
-                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR').' ', array_slice($name, 0, Config::LIKE_DISPLAYED-1)).' '.__('POST_LIKE_LASTSEP') ?>
-                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last) == 1) ? __('POST_LIKE_OTHER_SING') : ($last).' '.__('POST_LIKE_OTHER_PLURAL')); ?></a>
+                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', array_slice($name, 0, Config::LIKE_DISPLAYED - 1)) . ' ' . __('POST_LIKE_LASTSEP') ?>
+                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo ((($last) == 1) ? __('POST_LIKE_OTHER_SING') : ($last) . ' ' . __('POST_LIKE_OTHER_PLURAL')); ?></a>
                         <?php echo __('POST_LIKE_END_PLURAL_2') ?></span>
-                    <?php echo '<span class="hidden" id="like-show-all-'.$post['id'].'">'.implode(__('POST_LIKE_SEPARATOR').' ', $name) .' '. __('POST_LIKE_END_PLURAL_2').'</span>';
+                    <?php
+                    echo '<span class="hidden" id="like-show-all-' . $post['id'] . '">' . implode(__('POST_LIKE_SEPARATOR') . ' ', $name) . ' ' . __('POST_LIKE_END_PLURAL_2') . '</span>';
                 }
             }
             ?>
@@ -310,8 +314,8 @@
             <span id="new-like-container-<?php echo $post['id']; ?>"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_END_SING_2') ?></span>
         </div>
     <?php } ?>
-        
-<!--  COMMENTS  -->
+
+    <!--  COMMENTS  -->
     <div class="post-comments">
         <?php
         if (!isset($post['comments']) || !$is_logged)
@@ -362,24 +366,66 @@
                     <?php echo Text::inHTML($comment['message']); ?>
                     <div class="post-comment-info">
                         <?php echo Date::easy((int) $comment['time']); ?>
+                        <?php
+                        /* In Comment Likes */
+
+                        $has_liked = (empty($comment['user_liked'])) ? false : in_array(User_Model::$auth_data['id'], $comment['user_liked'], true);
+                        if (!$has_liked) {
+                            ?>
+                            &#183; <a href="javascript:;" onclick="Like.initPostComLike(<?php echo $post['id'] ?>, <?php echo $comment['id'] ?>)" id="post-com-like-link-<?php echo $comment['id'] ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
+                            <a href="javascript:;" onclick="Like.initPostComUnlike(<?php echo $post['id'] ?>, <?php echo $comment['id'] ?>)" class="hidden" id="post-com-unlike-link-<?php echo $comment['id'] ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
+                        <?php } else { ?>
+                            &#183; <a href="javascript:;" onclick="Like.initPostComUnlike(<?php echo $post['id'] ?>, <?php echo $comment['id'] ?>)" id="post-com-unlike-link-<?php echo $comment['id'] ?>"><?php echo __('POST_UNLIKE_LINK'); ?></a>
+                            <a href="javascript:;" onclick="Like.initPostComLike(<?php echo $post['id'] ?>, <?php echo $comment['id'] ?>)" class="hidden" id="post-com-like-link-<?php echo $comment['id'] ?>"><?php echo __('POST_LIKE_LINK'); ?></a>
+                        <?php } ?>
+                        &#183; 
+                        <?php
+                        $nb = count($comment['user_liked']);
+                        if ($nb == 0)
+                            echo '<span id="post-com-like-new-'.$comment['id'].'" class="hidden">'.__('POST_LIKE_USER').' '.__('POST_LIKE_END_SING_2').'</span>';
+                        else if ($nb == 1) {
+                            $like_user_url = Config::URL_ROOT . Routes::getPage('student', array('username' => $comment['like'][0]['username']));
+                            if($comment['like'][0]['username'] ==  User_Model::$auth_data['username'])
+                                $name = '<span id="post-com-like-new-'.$comment['id'].'">'.__('POST_LIKE_USER').' '.__('POST_LIKE_END_SING_2').'</span>';
+                            else
+                                $name = '<span id="post-com-like-new-'.$comment['id'].'" class="is-stranger"><a href="' . $like_user_url . '" class="post-comment-username">' . htmlspecialchars($comment['like'][0]['firstname'] . ' ' . $comment['like'][0]['lastname']) . '</a>'. ' ' . __('POST_LIKE_END_SING_1').'</span>';
+                                $name .= '<span id="post-com-unlike-new-'.$comment['id'].'" class="hidden">2 '.__('POST_LIKE_END_PLURAL_1').'</span>';
+                            echo $name;
+                            unset($name);
+                        } else {
+                            echo '<a href="javascript:;" id="post-com-like-new-'.$comment['id'].'" class="has-value" onclick="Like.showAllCom('.$comment['id'].')"><span id="post-com-like-val-'.$comment['id'].'">'.$nb.'</span> '.__('POST_LIKE_END_PLURAL_1').'</a>';
+                            $name = array();
+                            foreach ($comment['like'] as $comment_like) {
+                                if($comment['like'][0]['username'] ==  User_Model::$auth_data['username'])
+                                        $name[] = __('POST_LIKE_USER').' '.__('POST_LIKE_END_SING_2');
+                                else{
+                                        $like_user_url = Config::URL_ROOT . Routes::getPage('student', array('username' => $comment_like['username']));
+                                        $name[] = '<a href="' . $like_user_url . '" class="post-comment-username">' . htmlspecialchars($comment_like['firstname'] . ' ' . $comment_like['lastname']) . '</a>';
+                                }
+                            }
+                            unset($like_user_url);
+                            unset($comment_like);
+                            ?>
+                            <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden"><?php echo implode(__('POST_LIKE_SEPARATOR') . ' ', $name); ?></div>
+                    <?php } ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php
-        }
-        if ($is_student) {
+                <?php
+            }
+            if ($is_student) {
+                ?>
+                <form action="<?php echo Config::URL_ROOT . Routes::getPage('post_comment', array('id' => $post['id'])); ?>" method="post" class="post-comment-write">
+                    <span class="avatar hidden"><img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname . ' ' . $lastname; ?>" /></span>
+                    <div class="post-comment-write-message hidden">
+                        <textarea name="comment" rows="1" cols="50"></textarea>
+                        <input type="submit" value="<?php echo __('POST_COMMENT_SUBMIT'); ?>" />
+                    </div>
+                    <div class="post-comment-write-placeholder" onmouseup="Comment.write(<?php echo $post['id']; ?>);"><?php echo __('POST_COMMENT_PLACEHOLDER'); ?></div>
+                </form>
+                <?php
+            }
             ?>
-            <form action="<?php echo Config::URL_ROOT . Routes::getPage('post_comment', array('id' => $post['id'])); ?>" method="post" class="post-comment-write">
-                <span class="avatar hidden"><img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname . ' ' . $lastname; ?>" /></span>
-                <div class="post-comment-write-message hidden">
-                    <textarea name="comment" rows="1" cols="50"></textarea>
-                    <input type="submit" value="<?php echo __('POST_COMMENT_SUBMIT'); ?>" />
-                </div>
-                <div class="post-comment-write-placeholder" onmouseup="Comment.write(<?php echo $post['id']; ?>);"><?php echo __('POST_COMMENT_PLACEHOLDER'); ?></div>
-            </form>
-            <?php
-        }
-        ?>
     </div>
 </div>
 
