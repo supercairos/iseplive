@@ -123,7 +123,7 @@ foreach($cssFiles as $cssFile){
 						echo ',';
 					echo '"'.$js_translation.'":"'.__($js_translation).'"';
 				}
-			?>};
+			?> };
 		
 		<?php echo $jsCode; ?>
 		//]]>

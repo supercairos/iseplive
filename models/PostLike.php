@@ -40,13 +40,15 @@ class PostLike_Model extends Model {
         return $id;
     }
 
-    public function delete($post_id, $user_id) {
+    public function delete($post_id, $user_id, $attachment_id) {
         
         $id = $this->createQuery()
                 ->where(array(
                     'post_id' => $post_id,
                     'user_id' => $user_id,
-                ))->delete();
+                ))
+                ->where($attachment_id)
+                ->delete();
         self::clearCache();
         return $id;
     }

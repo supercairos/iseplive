@@ -164,7 +164,30 @@ var Post = {
                             $("attachment-photo-next").fireEvent("click");
                         })
                         .inject($("attachment-photo"));
-					
+                    // Cas de base : On a jamais aimé    
+                    $$('.like-link').removeClass('hidden');
+                    $$('.unlike-link').addClass('hidden');
+                    // Pour chaques Likes :
+                    $$(".post-like").each(function(l){
+                        // Cas ou quelqu'un a deja aimé && c'est la photo affiché.
+                        if(l.hasClass("post-like-attachment-"+photo.id)){
+                            // On affiche la "Like Box"
+                            l.removeClass("hidden");
+                            // Cas ou on a personnellement aimé
+                            if($('like-it-'+photo.id) === null){
+                                // On affiche "Je n'aime plus !"
+                                $$('.like-link').removeClass('hidden');
+                                $$('.unlike-link').addClass('hidden');
+                            } else {
+                                // On affiche "J'aime"
+                                $$('.like-link').addClass('hidden');
+                                $$('.unlike-link').removeClass('hidden');
+                            }
+                        } else {
+                            // C'est pas la bonne photo, on cache la "Like Box"
+                            l.addClass("hidden");
+                        }
+                    });
                     $$(".post-comment").each(function(e){
                         if(e.hasClass("post-comment-attachment"+photo.id))
                             e.removeClass("hidden");
@@ -179,14 +202,18 @@ var Post = {
                 $("attachment-photo").addClass('hidden');
 				
                 Post.currentPhoto = -1;
-				
+		$$(".post-like").each(function(l){
+                        if(l.hasClass("post-like-attachment-0"))
+                            l.removeClass("hidden");
+                        else
+                            l.addClass("hidden");
+                });		
                 $$(".post-comment").each(function(e){
                     if(e.hasClass("post-comment-attachment0"))
                         e.removeClass("hidden");
                     else
                         e.addClass("hidden");
                 });
-                $$(".post-delete").removeClass("hidden");
             }
         });
         if(location.hash.indexOf('#') == 0)
@@ -419,11 +446,12 @@ var Post = {
 
 var Like = {
     initPostLike: function(post_id){
+        var URL_ROOT = $('header-title').getProperty('href');
         var obj = {};
         if(Post.currentPhoto != -1)
                 obj.attachment = Post.photos[Post.currentPhoto].id;
         new Request({
-            url: 'ajax/like/'+post_id+'/add',
+            url: URL_ROOT+'ajax/like/'+post_id+'/add',
             onSuccess: function(data){
                 if(data == 'true'){
                     // On Change de Bouton de Like->Unlike
@@ -432,46 +460,46 @@ var Like = {
                     // On Affiche le tout
                     $('post-like-'+post_id).removeClass('hidden');
                     $('new-like-container-'+post_id).removeClass('hidden');
+                } else {
+                    alert('Erreur, ajout impossible.');
                 }
             }
         }).post(obj);
     },
     initPostComLike: function(post_id, comment_id){
+        var URL_ROOT = $('header-title').getProperty('href');
         var obj = {
             comment_id : comment_id
         };
         if(Post.currentPhoto != -1)
                 obj.attachment = Post.photos[Post.currentPhoto].id;
         new Request({
-            url: 'ajax/likecom/'+post_id+'/add',
+            url: URL_ROOT+'ajax/likecom/'+post_id+'/add',
             onSuccess: function(data){
-                alert(data);
                 if(data == 'true'){
                     // On Change de Bouton de Like->Unlike
                     $('post-com-like-link-'+comment_id).toggleClass('hidden');
                     $('post-com-unlike-link-'+comment_id).toggleClass('hidden');
                     // On Affiche le tout
-                    if($('post-com-like-new-'+comment_id).hasClass('has-value')){
-                        var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                    var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                    if(value > 1){
                         $('post-com-like-val-'+comment_id).set('text', (value+1));
                     } else {
-                        if($('post-com-like-new-'+comment_id).hasClass('is-stranger')){
-                            $('post-com-like-new-'+comment_id).addClass('hidden');
-                            $('post-com-unlike-new-'+comment_id).removeClass('hidden');
-                        } else {
-                            $('post-com-like-new-'+comment_id).removeClass('hidden');
-                        }
+                        $('post-com-like-new-'+comment_id).removeClass('hidden');
                     }
+                } else {
+                    alert('Erreur, ajout impossible.');
                 }
             }
         }).post(obj);
     },
     initPostUnlike: function(post_id){
+        var URL_ROOT = $('header-title').getProperty('href');
         var obj = {};
         if(Post.currentPhoto != -1)
                 obj.attachment = Post.photos[Post.currentPhoto].id;
         new Request({
-            url: 'ajax/like/'+post_id+'/delete',
+            url: URL_ROOT+'ajax/like/'+post_id+'/delete',
             onSuccess: function(data){
                 if(data  == 'true'){
                     $('post-like-link-'+post_id).toggleClass('hidden');
@@ -479,34 +507,33 @@ var Like = {
                     $('new-like-container-'+post_id).addClass('hidden');
                     if($('post-like-'+post_id).get('text').trim().length == 11)
                         $('post-like-'+post_id).addClass('hidden');
+                }else {
+                    alert('Erreur, ajout impossible.');
                 }
-            }
+            } 
         }).post(obj);
     },
     initPostComUnlike: function(post_id, comment_id){
+        var URL_ROOT = $('header-title').getProperty('href');
         var obj = {
             comment_id : comment_id
         };
         if(Post.currentPhoto != -1)
                 obj.attachment = Post.photos[Post.currentPhoto].id;
         new Request({
-            url: 'ajax/likecom/'+post_id+'/delete',
+            url: URL_ROOT+'ajax/likecom/'+post_id+'/delete',
             onSuccess: function(data){
-                alert(data);
                 if(data  == 'true'){
                     $('post-com-like-link-'+comment_id).toggleClass('hidden');
                     $('post-com-unlike-link-'+comment_id).toggleClass('hidden');
-                    if($('post-com-like-new-'+comment_id).hasClass('has-value')){
-                        var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                    var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
+                    if(value > 1){
                         $('post-com-like-val-'+comment_id).set('text', (value-1));
                     } else {
-                        if($('post-com-like-new-'+comment_id).hasClass('is-stranger')){
-                            $('post-com-like-new-'+comment_id).removeClass('hidden');
-                            $('post-com-unlike-new-'+comment_id).addClass('hidden');
-                        } else {
-                            $('post-com-like-new-'+comment_id).addClass('hidden');
-                        }
+                        $('post-com-like-new-'+comment_id).addClass('hidden');
                     }
+                } else {
+                    alert('Erreur, ajout impossible.');
                 }
             }
         }).post(obj);
@@ -517,8 +544,16 @@ var Like = {
         $('like-show-all-'+post_id).removeClass("hidden");
     },
     showAllCom : function(comment_id){
-        $('post-com-like-new-'+comment_id).destroy();
-        $('post-com-like-all-'+comment_id).removeClass("hidden");
+        $('post-com-like-new-'+comment_id).store('tip:text', $('post-com-like-all-'+comment_id).get('html'));
+        $('post-com-like-new-'+comment_id).store('tip:title', '');
+        var customTips = $('post-com-like-new-'+comment_id);
+        var toolTips = new Tips(customTips, {
+            offsets: {
+                'x': 0, //par défaut : 16
+                'y': -200 //par défaut : 16
+            },
+            fixed: true
+        });
     }
 };
 

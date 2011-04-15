@@ -148,7 +148,7 @@ class Post_Controller extends Controller {
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		try {
-			$post = $this->model->getPost((int) $params['id'], $is_logged ? null : true, $is_student);
+			$post = $this->model->getPost((int) $params['id']);
 			if(!$is_logged && $post['official'] == '0')
 				throw new Exception('You must be logged');
 			if(!$is_student && $post['private'] == '1')
@@ -252,9 +252,9 @@ class Post_Controller extends Controller {
 			'is_admin'		=> $is_admin,
 			'groups_auth'	=> $is_logged ? Group_Model::getAuth() : array(),
 			'posts'			=> count($post_ids)==0 ? array() : $this->model->getPosts(array(
-				'restricted'		=> true,
-				'show_private'		=> $is_student,
-				'ids'				=> $post_ids
+                        'restricted'		=> true,
+                        'show_private'		=> $is_student,
+                        'ids'				=> $post_ids
 			), 1000, 0),
 			'events' 			=> $events,
 			'calendar_month'	=> $month,
