@@ -390,7 +390,7 @@
                         <?php
                         if (empty($comment['user_liked'])){ ?>
                             <a name="<?php echo $comment['id'] ?>" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like hidden has-value likeTooltips" title="Vous"><span id="post-com-like-val-<? echo $comment['id'] ?>">
-                                 1</span> <?php echo __('POST_LIKE_STRING_SING'); ?></a>
+                                 0</span> <?php echo __('POST_LIKE_STRING_SING'); ?></a>
                             <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden-like-box hidden">Vous</div>
                   <?php } else {
                             $nb = count(array_unique($comment['user_liked'], SORT_NUMERIC));
