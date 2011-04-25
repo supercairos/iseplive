@@ -67,14 +67,14 @@ POST_LIKE_LASTSEP
         et 
 POST_LIKE_SEPARATOR
         ,
-POST_LIKE_END_PLURAL_1
-        aiment ça.
-POST_LIKE_END_PLURAL_2
-        aimez ça.
-POST_LIKE_END_SING_2
-        aimez.
-POST_LIKE_END_SING_1
-        aime ça.
+POST_LIKE_END_THIS
+        ça.
+POST_LIKE_END_LIKE
+        aime
+POST_LIKE_CONJ[]
+        z
+POST_LIKE_CONJ[]
+        nt
 POST_LIKE_OTHER_PLURAL
         personnes
 POST_LIKE_OTHER_SING

@@ -4,7 +4,7 @@ class PostLike_Controller extends Controller {
 
     public function add($params) {
 
-        $attachment_id = isset($_POST['attachment']) && ctype_digit($_POST['attachment']) ? (int) $_POST['attachment'] : null;
+        $attachment_id = (isset($_POST['attachment']) && ctype_digit($_POST['attachment']) && $_POST['attachment'] > 0) ? (int) $_POST['attachment'] : null;
         
         $this->setView('add.php');
         if (!isset(User_Model::$auth_data))
@@ -25,7 +25,7 @@ class PostLike_Controller extends Controller {
 
     public function delete($params) {
 
-        $attachment_id = isset($_POST['attachment']) && ctype_digit($_POST['attachment']) ? 'attachment_id = '.(int) $_POST['attachment'] : 'attachment_id IS NULL';
+        $attachment_id = isset($_POST['attachment']) && ctype_digit($_POST['attachment']) && ($_POST['attachment'] > 0) ? 'attachment_id = '.(int) $_POST['attachment'] : 'attachment_id IS NULL';
         
         $this->setView('delete.php');
         if (!isset(User_Model::$auth_data))

@@ -257,17 +257,16 @@
 <?php if (isset($post['likes'])) { 
     // Affichage en mode Single Post.
     foreach ($post['likes']['data'] as $key => $like) {
-        $modifier = ($key == 0) ? '' : ' hidden';?>
-        <div id="post-like-<?php echo $post['id'] ?>" class="post-like post-like-attachment-<?php echo $key.$modifier; ?>" style="min-height: 16px;">
-            <?php 
-            $like_per_attach = $like[$key];
-            if($like_per_attach['like_user_id'] == User_Model::$auth_data['id']){ ?>
-                <span id="like-it-<?php echo $key; ?>"class="hidden"></span>
-      <?php }
+        $modifier = ($key == 0) ? '' : ' hidden'; ?>
+        <div id="post-like-<?php echo $post['id'] ?>-<?php echo $key ?>" class="post-like post-like-attachment-<?php echo $key.$modifier; ?>" style="min-height: 16px;  width: 370px;">
+        <?php 
             $name = array();
             $has_liked = false;
             // On Range des utilisateur pour pouvoir mieux les afficher.
             foreach (array_unique($post['likes']['data'][$key], SORT_REGULAR) as $like) {
+                if($like['like_user_id'] == User_Model::$auth_data['id']){ ?>
+                    <span id="like-it-<?php echo $key; ?>"class="hidden"></span>
+          <?php }
                 $like_user_url = Config::URL_ROOT . Routes::getPage('student', array('username' => $like['username']));
                 if ($like['username'] != User_Model::$auth_data['username'])
                     $name[] = '<a href="' . $like_user_url . '" class="post-comment-username">' . htmlspecialchars($like['firstname'] . ' ' . $like['lastname']) . '</a>';
@@ -276,20 +275,22 @@
             }
             // On compte combient ils sont
             $last = count($name);
-            $last = ($has_liked) ? $last + 1 : $last;
+            echo '<span id="like-last-'.$post['id'].'-'.$key.'" class="hidden">'.$last.'</span>';
+            
             $separator = '';
-            if($last == 2)
+            if($last == 1)
                 $separator = ' '.__('POST_LIKE_LASTSEP');
-            else if($last > 2)
+            else if($last > 1)
                 $separator = __('POST_LIKE_SEPARATOR');
             if($has_liked){
                 // On le met en premier !
-                $string = '<span id="new-like-container-'.$post['id'].'" class="">'.__('POST_LIKE_USER').$separator.'</span>';
+                $string = '<span id="new-like-container-'.$post['id'].'-'.$key.'" class="">'.__('POST_LIKE_USER').$separator.'</span>';
                 array_unshift($name, $string);
             } else {
-                $string = '<span id="new-like-container-'.$post['id'].'" class="hidden">'.__('POST_LIKE_USER').$separator.'</span>';
+                $string = '<span id="new-like-container-'.$post['id'].'-'.$key.'" class="hidden">'.__('POST_LIKE_USER').$separator.'</span>';
                 array_unshift($name, $string);
             }
+            $last = ($has_liked) ? $last + 1 : $last;
             // On fait de belle phrase !
             if ($last > 2) {
                 $name[$last - 1] .= ' ' . __('POST_LIKE_LASTSEP') . ' ' . array_pop($name);
@@ -298,8 +299,9 @@
                     $name[$i] .= ',';
             }
             // Rendering !
-            $stringNb = ($last > 1) ? 'PLURAL' : 'SING';
-            $modificateur = ($has_liked) ? __('POST_LIKE_END_'.$stringNb.'_2') : __('POST_LIKE_END_'.$stringNb.'_1');
+            $stringNb = __('POST_LIKE_CONJ');
+            $modificateur = ($has_liked) ? __('POST_LIKE_END_LIKE').'<span id="like-grammar-'.$post['id'].'-'.$key.'">'.$stringNb[0].'</span> '.__('POST_LIKE_END_THIS') :
+                                           __('POST_LIKE_END_LIKE').'<span id="like-grammar-'.$post['id'].'-'.$key.'">'.(($last > 1)?$stringNb[1]:'').'</span> '.__('POST_LIKE_END_THIS');
             switch ($last):
                 case 0:
                     echo implode(' ', $name);
@@ -311,21 +313,21 @@
                     echo implode(' ', $name).' '.$modificateur;
                     break;
                 default: ?>
-                    <span id="like-show-short-<?php echo $post['id'] ?>"><?php echo implode(' ', array_slice($name, 0, ($has_liked) ? Config::LIKE_DISPLAYED : Config::LIKE_DISPLAYED +1)) . ' ' . __('POST_LIKE_LASTSEP') ?>
-                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo (($last > Config::LIKE_DISPLAYED) ? ($last-Config::LIKE_DISPLAYED+1).' ': '').__('POST_LIKE_OTHER_'.$stringNb); ?></a> <?php echo $modificateur?></span>
-                    <span class="hidden" id="like-show-all-<?php echo $post['id']; ?>"><?php echo implode(' ', $name) . ' ' . $modificateur; ?></span>       
+                    <span id="like-show-short-<?php echo $post['id'] ?>-<?php echo $key ?>"><?php echo implode(' ', array_slice($name, 0, ($has_liked) ? Config::LIKE_DISPLAYED : Config::LIKE_DISPLAYED +1)) . ' ' . __('POST_LIKE_LASTSEP') ?>
+                        <a href="javascript:;"  onclick="Like.showAll(<?php echo $post['id']; ?>)"><?php echo (($last > Config::LIKE_DISPLAYED) ? ($last-Config::LIKE_DISPLAYED+1).' ': '').__('POST_LIKE_OTHER_'.(($last > 1)?'PLURAL':'SING')) ; ?></a> <?php echo $modificateur?></span>
+                    <span class="hidden" id="like-show-all-<?php echo $post['id']; ?>-<?php echo $key ?>"><?php echo implode(' ', $name) . ' ' . $modificateur; ?></span>       
               <?php break;
             endswitch;
             unset($name);
         ?>
         </div>
     <?php }  ?>      
-<?php } else { ?>
-    <div id="post-like-<?php echo $post['id'] ?>"class="post-comment post-like hidden" style="min-height: 16px;">
-        <span id="new-like-container-<?php echo $post['id']; ?>"><?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_END_SING_2') ?></span>
+<?php }?>
+    <?php $conj = __('POST_LIKE_CONJ'); ?>
+    <div id="post-like-<?php echo $post['id'] ?>-all"class="post-like hidden" style="min-height: 16px; width: 370px;">
+        <span class="hidden like-last">0</span>
+        <?php echo __('POST_LIKE_USER') ?> <?php echo __('POST_LIKE_END_LIKE').$conj[0].' '.__('POST_LIKE_END_THIS'); ?>
     </div>
-<?php } ?>
-
     <!--  COMMENTS  -->
     <div class="post-comments">
         <?php
@@ -387,15 +389,13 @@
                             <?php } ?>&#183;
                         <?php
                         if (empty($comment['user_liked'])){ ?>
-                            <a href="javascript:;" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like hidden has-value" onmouseover="Like.showAllCom(<?php echo $comment['id'] ?>)" title=""><span id="post-com-like-val-<? echo $comment['id'] ?>">
+                            <a name="<?php echo $comment['id'] ?>" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like hidden has-value likeTooltips" title="Vous"><span id="post-com-like-val-<? echo $comment['id'] ?>">
                                  1</span> <?php echo __('POST_LIKE_STRING_SING'); ?></a>
                             <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden-like-box hidden">Vous</div>
                   <?php } else {
                             $nb = count(array_unique($comment['user_liked'], SORT_NUMERIC));
                             // On compte le nombre personne qui Aime ce comment. 
                             $string = ($nb < 2) ? 'SING' : 'PLURAL'; ?>
-                            <a href="javascript:;" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like has-value" onmouseover="Like.showAllCom(<?php echo $comment['id'] ?>)" title=""><span id="post-com-like-val-<? echo $comment['id'] ?>">
-                            <?php echo $nb ?></span> <?php echo __('POST_LIKE_STRING_'.$string); ?></a>
                             <?php 
                             $name = array();
                             foreach ($comment['like'] as $comment_like) {
@@ -405,7 +405,8 @@
                                     $name[] = htmlspecialchars($comment_like['firstname'] . ' ' . $comment_like['lastname']);
                                 }
                             } ?>
-                        <div id="post-com-like-all-<?php echo $comment['id']; ?>" class="hidden-like-box hidden"><?php echo implode('<br />', $name); ?></div>
+                            <a name="<?php echo $comment['id'] ?>" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like has-value likeTooltips" title="<?php echo implode('<br />', $name); ?>"><span id="post-com-like-val-<? echo $comment['id'] ?>">
+                            <?php echo $nb ?></span> <?php echo __('POST_LIKE_STRING_'.$string); ?></a>
                     <?php } ?>
                         </div>
                     </div>
