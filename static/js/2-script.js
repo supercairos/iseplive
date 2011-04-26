@@ -494,9 +494,12 @@ var Like = {
                     $('post-com-unlike-link-'+comment_id).toggleClass('hidden');
                     // On Affiche le tout
                     var value = parseInt($('post-com-like-val-'+comment_id).get('text'));
-                    $('post-com-like-val-'+comment_id).set('text', (value+1));
+                    $('post-com-like-val-'+comment_id).set('text', (++value));
                     $('post-com-like-new-'+comment_id).removeClass('hidden');
-                    
+                    if(value > 1)
+                        $('like-com-conj-'+comment_id).removeClass('hidden');
+                    else
+                        $('like-com-conj-'+comment_id).addClass('hidden');
                 } else {
                     alert('Erreur, ajout impossible.');
                 }
@@ -549,6 +552,10 @@ var Like = {
                     $('post-com-like-val-'+comment_id).set('text', (--value));
                     if(value < 1)
                         $('post-com-like-new-'+comment_id).addClass('hidden');
+                    else if(value == 1)
+                        $('like-com-conj-'+comment_id).addClass('hidden');
+                    else
+                        $('like-com-conj-'+comment_id).removeClass('hidden');
                 } else {
                     alert('Erreur, ajout impossible.');
                 }

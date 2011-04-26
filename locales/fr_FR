@@ -75,13 +75,13 @@ POST_LIKE_CONJ[]
         z
 POST_LIKE_CONJ[]
         nt
+POST_LIKE_PLURAL_CONJ
+        s
 POST_LIKE_OTHER_PLURAL
         personnes
 POST_LIKE_OTHER_SING
         une personne
-POST_LIKE_STRING_PLURAL
-        personnes
-POST_LIKE_STRING_SING
+POST_LIKE_STRING
         personne
 POST_PRIVATE
 	Visible uniquement par les élèves

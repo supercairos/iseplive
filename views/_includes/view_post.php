@@ -395,7 +395,7 @@
                   <?php } else {
                             $nb = count(array_unique($comment['user_liked'], SORT_NUMERIC));
                             // On compte le nombre personne qui Aime ce comment. 
-                            $string = ($nb < 2) ? 'SING' : 'PLURAL'; ?>
+                            $string = ($nb < 2) ? 'hidden' : ''; ?>
                             <?php 
                             $name = array();
                             foreach ($comment['like'] as $comment_like) {
@@ -406,7 +406,7 @@
                                 }
                             } ?>
                             <a name="<?php echo $comment['id'] ?>" id="post-com-like-new-<?php echo $comment['id'] ?>" class="inline-like has-value likeTooltips" title="<?php echo implode('<br />', $name); ?>"><span id="post-com-like-val-<? echo $comment['id'] ?>">
-                            <?php echo $nb ?></span> <?php echo __('POST_LIKE_STRING_'.$string); ?></a>
+                            <?php echo $nb ?></span> <?php echo __('POST_LIKE_STRING'); ?><span id="like-com-conj-<?php echo $comment['id'] ?>" class="<?php echo $string; ?>"><?php echo __('POST_LIKE_PLURAL_CONJ'); ?></span></a>
                     <?php } ?>
                         </div>
                     </div>
